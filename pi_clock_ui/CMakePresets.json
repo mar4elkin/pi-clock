@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "emulator",
+      "displayName": "SDL Emulator (WSL / Desktop)",
+      "description": "Build Pi Clock with lcdgfx SDL2 emulation",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build-sdl",
+      "cacheVariables": {
+        "PI_CLOCK_EMULATOR": "ON",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "hardware",
+      "displayName": "Raspberry Pi Hardware (SSD1306)",
+      "description": "Build Pi Clock for a physical SSD1306 over I2C on Raspberry Pi",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build-pi",
+      "cacheVariables": {
+        "PI_CLOCK_EMULATOR": "OFF",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "emulator",
+      "displayName": "Build SDL Emulator",
+      "configurePreset": "emulator",
+      "jobs": 4,
+      "targets": [
+        "pi_clock"
+      ]
+    },
+    {
+      "name": "hardware",
+      "displayName": "Build Raspberry Pi Hardware",
+      "configurePreset": "hardware",
+      "jobs": 2,
+      "targets": [
+        "pi_clock"
+      ]
+    }
+  ]
+}
