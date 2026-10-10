@@ -1,6 +1,6 @@
 # pi_clock_ui
 
-C++20 display module for **Pi Clock**, a ROS 2-based smart clock project.
+C++20 display module for **Pi Clock**.
 
 Features digital and analog clock faces, animated transitions, and seasonal startup animations.
 
@@ -25,14 +25,13 @@ sudo apt install git cmake build-essential pkg-config libsdl2-dev
 Clone [lcdgfx](https://github.com/lexus2k/lcdgfx) alongside the project:
 
 ```bash
-cd ~/projects
 git clone https://github.com/lexus2k/lcdgfx.git
 ```
 
 Expected structure:
 
 ```text
-projects/
+pi-clock/
 ├── lcdgfx/
 └── pi_clock_ui/
 ```
