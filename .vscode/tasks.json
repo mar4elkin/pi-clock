@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build: SDL Emulator",
+      "type": "shell",
+      "command": "cmake --preset emulator && cmake --build --preset emulator",
+      "options": {
+        "cwd": "${workspaceFolder}/pi_clock_ui"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Build: Raspberry Pi Hardware",
+      "type": "shell",
+      "command": "cmake --preset hardware && cmake --build --preset hardware",
+      "options": {
+        "cwd": "${workspaceFolder}/pi_clock_ui"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}
