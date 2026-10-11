@@ -1,4 +1,25 @@
-build
-lcdgfx/
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# CMake
+out/
 build-sdl/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# External dependencies
+lcdgfx/
+
+# IDE
 .vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local environment
+opt/

@@ -18,6 +18,7 @@ public:
     DisplayController()
         : display_(-1) {}
 
+    template <typename T>
     void begin() {
         display_.begin();
         display_.clear();
@@ -26,29 +27,10 @@ public:
 
         boot_active_ = true;
 
-        // animation_controller_.play<AutumnGreeterAnimation>(
-        //     [this]() {
-        //         screen_controller_.begin();
-        //         boot_active_ = false;
-        //     }
-        // );
-
-        animation_controller_.play<AutumnGreeterAnimation>(
+        animation_controller_.play<T>(
             [this]() {
-                animation_controller_.play<FrostGreeterAnimation>(
-                    [this]() {
-                        animation_controller_.play<SpringGreeterAnimation>(
-                        [this]() {
-                            animation_controller_.play<SummerGreeterAnimation>(
-                            [this]() {
-                                screen_controller_.begin();
-                                boot_active_ = false;
-                            }
-                        );
-                        }
-                    );
-                    }
-                );
+                screen_controller_.begin();
+                boot_active_ = false;
             }
         );
     }

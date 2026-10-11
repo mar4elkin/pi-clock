@@ -1,5 +1,6 @@
+
 cmake_minimum_required(VERSION 3.16)
-project(pi_clock LANGUAGES C CXX)
+project(PI_CLOCK_UI LANGUAGES C CXX)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -7,7 +8,6 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# lcdgfx находится рядом с pi-clock
 set(LCDGFX_ROOT
     "${CMAKE_CURRENT_SOURCE_DIR}/../lcdgfx"
     CACHE PATH "Path to lcdgfx"
@@ -17,9 +17,10 @@ if(NOT EXISTS "${LCDGFX_ROOT}/CMakeLists.txt")
     message(FATAL_ERROR "lcdgfx not found: ${LCDGFX_ROOT}")
 endif()
 
-option(PI_CLOCK_EMULATOR "Use SDL2 emulator" OFF)
+# Режим SDL2-эмулятора
+option(PI_CLOCK_UI_EMULATOR "Use SDL2 emulator" OFF)
 
-# Подключаем lcdgfx
+# Подключение lcdgfx
 add_subdirectory(
     "${LCDGFX_ROOT}"
     "${CMAKE_CURRENT_BINARY_DIR}/lcdgfx-build"
@@ -30,10 +31,7 @@ target_include_directories(lcdgfx PUBLIC
     "${LCDGFX_ROOT}/src"
 )
 
-# Наше приложение
-add_executable(pi_clock
-    src/main.cpp
-
+add_library(PI_CLOCK_UI STATIC
     src/screen/clock_display_screen.cpp
     src/screen/analog_clock_screen.cpp
 
@@ -47,15 +45,19 @@ add_executable(pi_clock
     src/animation/greeters/seasonal/autumn_greeter_animation.cpp
 )
 
-target_include_directories(pi_clock PRIVATE
+target_compile_features(PI_CLOCK_UI PUBLIC cxx_std_20)
+
+target_include_directories(PI_CLOCK_UI PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-target_link_libraries(pi_clock PRIVATE lcdgfx)
+target_link_libraries(PI_CLOCK_UI PUBLIC
+    lcdgfx
+)
 
-# SDL нужен только для эмулятора
-if(PI_CLOCK_EMULATOR)
+if(PI_CLOCK_UI_EMULATOR)
     find_package(PkgConfig REQUIRED)
+
     pkg_check_modules(
         SDL2 REQUIRED IMPORTED_TARGET sdl2
     )
@@ -84,7 +86,15 @@ if(PI_CLOCK_EMULATOR)
         "${LCDGFX_ROOT}/tools/sdl"
     )
 
-    target_link_libraries(pi_clock PRIVATE
+    target_link_libraries(PI_CLOCK_UI PUBLIC
         lcdgfx_sdl
     )
 endif()
+
+add_executable(PI_CLOCK
+    src/main.cpp
+)
+
+target_link_libraries(PI_CLOCK PRIVATE
+    PI_CLOCK_UI
+)

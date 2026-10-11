@@ -1,5 +1,11 @@
 {
-  "cmake.sourceDirectory": "${workspaceFolder}/pi_clock_ui",
-  "cmake.useCMakePresets": "always",
-  "cmake.configureOnOpen": true
+    "C_Cpp.default.configurationProvider": "",
+    "C_Cpp.default.compileCommands": "",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "/opt/ros/jazzy/include/**"
+    ],
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.cppStandard": "c++20",
+    "cmake.sourceDirectory": "/home/mar4elkin/projects/pi-clock/pi_clock_ui"
 }
