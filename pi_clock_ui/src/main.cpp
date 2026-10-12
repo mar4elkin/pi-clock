@@ -1,11 +1,17 @@
-#include "display/controller.hpp"
-#include "screen/clock_display_screen.hpp"
-#include "screen/analog_clock_screen.hpp"
-
 #include <chrono>
 #include <csignal>
 #include <ctime>
 #include <thread>
+
+#include "pi_clock/system_status.hpp"
+
+#include "display/controller.hpp"
+
+#include "screen/clock_display_screen.hpp"
+#include "screen/analog_clock_screen.hpp"
+#include "screen/system_status_screen.hpp"
+
+#include "animation/greeters/seasonal/frost_greeter_animation.hpp"
 
 namespace {
     volatile std::sig_atomic_t running = 1;
@@ -19,12 +25,19 @@ int main() {
     std::signal(SIGINT, stop_on_signal);
     std::signal(SIGTERM, stop_on_signal);
 
+    SystemStatus status;
+
     DisplayController<
         ClockDisplayScreen,
-        AnalogClockScreen
-    > controller;
+        AnalogClockScreen,
+        SystemStatusScreen
+    > controller(
+        std::make_unique<ClockDisplayScreen>(),
+        std::make_unique<AnalogClockScreen>(),
+        std::make_unique<SystemStatusScreen>(status)
+    );
 
-    controller.begin();
+    controller.begin<FrostGreeterAnimation>();
 
     std::time_t last_second = static_cast<std::time_t>(-1);
     auto previous = std::chrono::steady_clock::now();

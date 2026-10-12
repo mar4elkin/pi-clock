@@ -7,16 +7,14 @@
 #include "animation/controller.hpp"
 #include "animation/transitions/wipe_transition.hpp"
 
-#include "animation/greeters/seasonal/frost_greeter_animation.hpp"
-#include "animation/greeters/seasonal/spring_greeter_animation.hpp"
-#include "animation/greeters/seasonal/summer_greeter_animation.hpp"
-#include "animation/greeters/seasonal/autumn_greeter_animation.hpp"
-
 template <typename... Screens>
 class DisplayController {
 public:
-    DisplayController()
-        : display_(-1) {}
+    DisplayController() : display_(-1) {}
+
+    explicit DisplayController(std::unique_ptr<Screens>... screens)
+        : display_(-1),
+        screen_controller_(std::move(screens)...) {}
 
     template <typename T>
     void begin() {

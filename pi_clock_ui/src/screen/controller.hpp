@@ -15,6 +15,10 @@ public:
         ), ...);
     }
 
+    ScreenController(std::unique_ptr<Screens>... screens) {
+        (screens_.push_back(std::move(screens)), ...);
+    }
+
     void begin() {
         if (!screens_.empty()) {
             screens_.front()->onEnter();

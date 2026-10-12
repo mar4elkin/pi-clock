@@ -1,10 +1,4 @@
 
-#include "display_node.hpp"
-
-#include "display/controller.hpp"
-#include "screen/clock_display_screen.hpp"
-#include "screen/analog_clock_screen.hpp"
-
 #include <chrono>
 #include <ctime>
 #include <functional>
@@ -12,10 +6,20 @@
 #include <thread>
 #include <utility>
 
-using ClockController = DisplayController<
-    ClockDisplayScreen,
-    AnalogClockScreen
->;
+#include "system_monitor/system_monitor.hpp"
+
+#include "display_node.hpp"
+
+#include "display/controller.hpp"
+
+#include "screen/clock_display_screen.hpp"
+#include "screen/analog_clock_screen.hpp"
+#include "screen/system_status_screen.hpp"
+
+#include "animation/greeters/seasonal/autumn_greeter_animation.hpp"
+#include "animation/greeters/seasonal/frost_greeter_animation.hpp"
+#include "animation/greeters/seasonal/spring_greeter_animation.hpp"
+#include "animation/greeters/seasonal/summer_greeter_animation.hpp"
 
 DisplayNode::DisplayNode(std::function<void()> on_next_screen)
     : rclcpp::Node("display_node"),
@@ -37,6 +41,19 @@ DisplayNode::DisplayNode(std::function<void()> on_next_screen)
 
 int main(int argc, char** argv)
 {
+    SystemStatus status;
+    SystemMonitor monitor;
+
+    DisplayController<
+        ClockDisplayScreen,
+        AnalogClockScreen,
+        SystemStatusScreen
+    > controller(
+        std::make_unique<ClockDisplayScreen>(),
+        std::make_unique<AnalogClockScreen>(),
+        std::make_unique<SystemStatusScreen>(status)
+    );
+
     rclcpp::init(argc, argv);
 
     const auto now = std::chrono::system_clock::now();
@@ -46,8 +63,6 @@ int main(int argc, char** argv)
 
     std::tm local_time{};
     localtime_r(&timestamp, &local_time);
-
-    ClockController controller;
     
     switch (local_time.tm_mon) {
         case 11:
@@ -88,6 +103,8 @@ int main(int argc, char** argv)
 
     while (rclcpp::ok()) {
         executor.spin_some();
+
+        status = monitor.sample();
 
         const auto now = std::chrono::steady_clock::now();
 

@@ -34,6 +34,7 @@ target_include_directories(lcdgfx PUBLIC
 add_library(PI_CLOCK_UI STATIC
     src/screen/clock_display_screen.cpp
     src/screen/analog_clock_screen.cpp
+    src/screen/system_status_screen.cpp
 
     src/animation/transitions/wipe_transition.cpp
 
@@ -49,6 +50,7 @@ target_compile_features(PI_CLOCK_UI PUBLIC cxx_std_20)
 
 target_include_directories(PI_CLOCK_UI PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../common/include"
 )
 
 target_link_libraries(PI_CLOCK_UI PUBLIC

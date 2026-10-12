@@ -22,13 +22,19 @@ ament_target_dependencies(
 )
 
 add_subdirectory(
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../pi_clock_ui"
-    "${CMAKE_CURRENT_BINARY_DIR}/pi_clock_ui_build"
-    EXCLUDE_FROM_ALL
+  "${CMAKE_CURRENT_SOURCE_DIR}/../../../pi_clock_ui"
+  "${CMAKE_CURRENT_BINARY_DIR}/pi_clock_ui_build"
+  EXCLUDE_FROM_ALL
+)
+
+add_subdirectory(
+  "${CMAKE_CURRENT_SOURCE_DIR}/../../../system_monitor"
+  "${CMAKE_CURRENT_BINARY_DIR}/system_monitor_build"
 )
 
 target_link_libraries(display_node
     PI_CLOCK_UI
+    pi_clock_system_monitor
 )
 
 install(TARGETS display_node
