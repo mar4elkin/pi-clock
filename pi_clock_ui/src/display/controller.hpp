@@ -59,18 +59,12 @@ public:
             return;
         }
 
-        if (screen_controller_.handleInput(action)) { return; }
-
         switch (action)
         {
         case InputAction::Next:
             nextScreen();
             break;
-
-        case InputAction::Previous:
-            previousScreen();
-            break;
-        
+        case InputAction::Previous:        
         case InputAction::Select:
         case InputAction::Back:
             break;
@@ -100,7 +94,7 @@ protected:
             0.6,
 
             [this]() {
-                screen_controller_.nextScreen();
+                screen_controller_.handleInput(InputAction::Next);
             },
 
             [this]() {

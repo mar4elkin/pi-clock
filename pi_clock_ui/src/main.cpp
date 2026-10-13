@@ -10,6 +10,7 @@
 #include "screen/clock_display_screen.hpp"
 #include "screen/analog_clock_screen.hpp"
 #include "screen/system_status_screen.hpp"
+#include "screen/timer_screen.hpp"
 
 #include "animation/greeters/seasonal/frost_greeter_animation.hpp"
 
@@ -27,14 +28,22 @@ int main() {
 
     SystemStatus status;
 
+    // DisplayController<
+    //     ClockDisplayScreen,
+    //     AnalogClockScreen,
+    //     SystemStatusScreen,
+    //     TimerScreen
+    // > controller(
+    //     std::make_unique<ClockDisplayScreen>(),
+    //     std::make_unique<AnalogClockScreen>(),
+    //     std::make_unique<SystemStatusScreen>(status),
+    //     std::make_unique<TimerScreen>(),
+    // );
+
     DisplayController<
-        ClockDisplayScreen,
-        AnalogClockScreen,
-        SystemStatusScreen
+        TimerScreen
     > controller(
-        std::make_unique<ClockDisplayScreen>(),
-        std::make_unique<AnalogClockScreen>(),
-        std::make_unique<SystemStatusScreen>(status)
+        std::make_unique<TimerScreen>()
     );
 
     controller.begin<FrostGreeterAnimation>();
