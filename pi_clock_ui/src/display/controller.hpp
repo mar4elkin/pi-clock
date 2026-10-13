@@ -44,10 +44,6 @@ public:
         canvas_.clear();
         canvas_.setColor(0xFFFF);
 
-        if (!boot_active_) {
-            screen_controller_.render(canvas_);
-        }
-
         screen_controller_.render(canvas_);
         animation_controller_.render(canvas_);
 
@@ -56,6 +52,10 @@ public:
 
     void handleInput(InputAction action) {
         if (boot_active_ || transition_active_) {
+            return;
+        }
+
+        if (screen_controller_.handleInput(action)) {
             return;
         }
 
@@ -94,7 +94,7 @@ protected:
             0.6,
 
             [this]() {
-                screen_controller_.handleInput(InputAction::Next);
+                screen_controller_.nextScreen();
             },
 
             [this]() {

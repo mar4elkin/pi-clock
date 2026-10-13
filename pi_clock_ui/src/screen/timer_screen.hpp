@@ -3,7 +3,8 @@
 #include "screen/screen.hpp"
 
 enum class TimerScreenStatus {
-    IDLE,
+    VIEWING,
+    EDITING,
     RUNNING,
     PAUSED,
     DONE
@@ -19,5 +20,5 @@ class TimerScreen : public BaseScreen {
 public:
     void update(const RenderContext& context) override;
     void render(NanoCanvas<128, 64, 1>& canvas) override;
-    bool TimerScreen::handleInput(InputAction action) override;
+    bool handleInput(InputAction action) override;
 };

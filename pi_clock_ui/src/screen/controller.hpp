@@ -38,9 +38,11 @@ public:
     }
 
     void handleInput(InputAction action) {
-        if (screens_.size() <= 1) {
-            return;
+        if (screens_.empty()) {
+            return false;
         }
+
+        return screens_.front()->handleInput(action);
 
         if (screens_.front()->handleInput(action)) { return; }
         
@@ -59,7 +61,6 @@ public:
         }
     }
 
-private:
     void nextScreen() {
         if (screens_.size() <= 1) {
             return;
@@ -73,5 +74,6 @@ private:
         screens_.front()->onEnter();
     }
 
+private:
     std::deque<std::unique_ptr<BaseScreen>> screens_;
 };
