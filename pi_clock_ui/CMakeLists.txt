@@ -32,6 +32,7 @@ target_include_directories(lcdgfx PUBLIC
 )
 
 add_library(PI_CLOCK_UI STATIC
+    src/screen/timer_screen.cpp
     src/screen/clock_display_screen.cpp
     src/screen/analog_clock_screen.cpp
     src/screen/system_status_screen.cpp

@@ -69,7 +69,7 @@ int main() {
         if (epoch_second != last_second) {
             if (last_second != static_cast<std::time_t>(-1)
                 && local_time.tm_sec % 10 == 0) {
-                controller.nextScreen();
+                controller.handleInput(InputAction::Next);
             }
 
             last_second = epoch_second;

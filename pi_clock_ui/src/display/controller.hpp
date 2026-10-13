@@ -54,6 +54,33 @@ public:
         display_.drawCanvas(0, 0, canvas_);
     }
 
+    void handleInput(InputAction action) {
+        if (boot_active_ || transition_active_) {
+            return;
+        }
+
+        if (screen_controller_.handleInput(action)) { return; }
+
+        switch (action)
+        {
+        case InputAction::Next:
+            nextScreen();
+            break;
+
+        case InputAction::Previous:
+            previousScreen();
+            break;
+        
+        case InputAction::Select:
+        case InputAction::Back:
+            break;
+            
+        default:
+            break;
+        }
+    }
+
+protected:
     void nextScreen() {
         if (boot_active_ || transition_active_) {
             return;

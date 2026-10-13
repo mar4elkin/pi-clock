@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 
     auto node = std::make_shared<DisplayNode>(
         [&controller]() {
-            controller.nextScreen();
+            controller.handleInput(InputAction::Next);
         }
     );
 
