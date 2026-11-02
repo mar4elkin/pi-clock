@@ -1,78 +1,32 @@
-# pi_clock_ui
+# PI Clock UI
 
-C++20 display module for **Pi Clock**.
+Standalone C++20 display module for PI Clock, built with **CMake and lcdgfx**.
 
-Features digital and analog clock faces, animated transitions, and seasonal startup animations.
-
-**Stack:** C++20 · CMake · lcdgfx · SDL2
+Implements digital and analog clock screens, seasonal startup animations, screen transitions, and an experimental timer interface.
 
 ## Dependencies
 
-### Desktop — Arch Linux / WSL
+- C++20 compiler
+- CMake
+- [lcdgfx](https://github.com/lexus2k/lcdgfx)
+- SDL2 (for desktop emulation)
+
+## SDL2 Emulator
+
+On Ubuntu/Debian, install the required dependencies:
 
 ```bash
-sudo pacman -S --needed git cmake base-devel pkgconf sdl2
+sudo apt install cmake build-essential pkg-config libsdl2-dev
 ```
 
-Ubuntu / Debian:
+From the repository root, make sure lcdgfx is cloned into `lcdgfx/`, then build:
 
 ```bash
-sudo apt install git cmake build-essential pkg-config libsdl2-dev
+cmake -S pi_clock_ui -B build-sdl -DPI_CLOCK_UI_EMULATOR=ON
+cmake --build build-sdl -j
+./build-sdl/PI_CLOCK
 ```
 
-### Install lcdgfx
+## Hardware
 
-Clone [lcdgfx](https://github.com/lexus2k/lcdgfx) alongside the project:
-
-```bash
-git clone https://github.com/lexus2k/lcdgfx.git
-```
-
-Expected structure:
-
-```text
-pi-clock/
-├── lcdgfx/
-└── pi_clock_ui/
-```
-
-## Build & Run
-
-### Desktop (SDL2 emulator)
-
-```bash
-cmake -S . -B build-sdl -DPI_CLOCK_EMULATOR=ON
-cmake --build build-sdl -j4
-./build-sdl/pi_clock
-```
-
-### Raspberry Pi (SSD1306 OLED)
-
-Install dependencies on Raspberry Pi OS:
-
-```bash
-sudo apt update
-sudo apt install git cmake build-essential i2c-tools libi2c-dev
-```
-
-Enable I²C using `sudo raspi-config` under **Interface Options → I2C**, then reboot.
-
-Check the connected display:
-
-```bash
-sudo i2cdetect -y 1
-```
-
-Build directly on Raspberry Pi:
-
-```bash
-cmake -S . -B build-pi -DPI_CLOCK_EMULATOR=OFF
-cmake --build build-pi -j2
-./build-pi/pi_clock
-```
-
-SDL2 is not required for Raspberry Pi hardware mode.
-
-## Status
-
-Standalone display subsystem. ROS 2 integration is planned in the main Pi Clock project.
+The module also supports SSD1306 OLED displays connected via I²C. See the main [README](../README.md) for ROS 2 integration.
